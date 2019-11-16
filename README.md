@@ -1,2 +1,4 @@
 # bulksms
-sending sms messages to multiple contacts
+
+Flask app that sends bulk broadcast messages
+
