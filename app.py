@@ -75,7 +75,7 @@ def sendmessage():
 
     conn = http.client.HTTPConnection("api.msg91.com")
 
-    conn.request("GET", "/api/sendhttp.php?sender={}&route=4&mobiles={}&authkey=206256AUdO3HxGi0h75ac5eb7a&encrypt=&country=27&message={}".format(org,reciep,final_message))
+    conn.request("GET", "/api/sendhttp.php?sender={}&route=4&mobiles={}&authkey={}&encrypt=&country=27&message={}".format(org,reciep,final_message))
 
     #res = conn.getresponse()
     #data = res.read()
