@@ -1,0 +1,43 @@
+<!DOCTYPE HTML>
+<!--
+    THIS BASE HTML IS LIKE INDEX.HTML AS IT HOLDS ALL RELATIVE STATIC FILES 
+    STUFF WILL BE FEEDED TO BODY LIKE COMPONENTS
+-->
+<html>
+	<head>
+		
+		<title>{% block title %} {% endblock %}</title>
+		<meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+        {% block css %}
+        {% endblock %}
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+		<link rel="stylesheet" href="{{ url_for('static',filename = 'css/main.css' )}}" />
+		<noscript><link rel="stylesheet" href="{{ url_for('static',filename = 'css/noscript.css' )}}" /></noscript>
+    </head>
+    
+	<body class="is-preload hold-transition sidebar-mini">
+        
+        <!-- Main -->
+        {% block body %}
+        
+        {% endblock %}
+
+        
+    <!-- BG -->
+	<div id="bg"></div>
+		<!-- Scripts -->
+        <script src=" {{ url_for('static', filename = 'js/jquery.min.js' )}} "></script>
+        <script src=" {{ url_for('static', filename = 'js/browser.min.js' )}}"></script>
+        <script src=" {{ url_for('static', filename = 'js/breakpoints.min.js' )}}"></script>
+        <script src="{{ url_for('static', filename = 'js/util.js'  )}}" ></script>
+        <script src="{{ url_for('static', filename = 'js/main.js' )}}"></script>
+        <!-- jQuery -->
+        <script src="{{ url_for('static', filename = 'jquery/jquery.min.js ' )}}"></script>
+        <!-- Bootstrap 4 -->
+        <script src="{{ url_for('static', filename = 'bootstrap/js/bootstrap.bundle.min.js ' )}}"></script>
+        <!-- AdminLTE App -->
+        <script src="{{ url_for('static', filename = 'js/adminlte.min.js ' )}}"></script>
+
+	</body>
+</html>
