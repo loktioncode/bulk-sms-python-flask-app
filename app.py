@@ -1,4 +1,5 @@
-from flask import Flask, render_template, request, jsonify
+from flask import Flask, render_template, request, jsonify, url_for, redirect
+from flask_mail import Mail, Message
 from flask_sqlalchemy import SQLAlchemy 
 from sqlalchemy import Column, Boolean, Integer, String
 import http.client
@@ -17,6 +18,14 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///foo.db'
 
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
+#send email to admin for join request
+app.config['MAIL_SERVER']='smtp.gmail.com'
+app.config['MAIL_PORT'] = 465
+app.config['MAIL_USERNAME'] = 'elishabere5@gmail.com'
+app.config['MAIL_PASSWORD'] = 'CATHRINE1995'
+app.config['MAIL_USE_TLS'] = False
+app.config['MAIL_USE_SSL'] = True
+
 db = SQLAlchemy(app)
 
 
@@ -26,32 +35,66 @@ class Contacts(db.Model):
     name = Column(String(50))
     cell = Column(Integer)
     email = Column(String(50))
+    org = Column(Integer)
+
+class User(db.Model):
+    id = Column(Integer, primary_key=True)
+    name = Column(String(50))
+    cell = Column(Integer)
+    email = Column(String(50))
+    state = Column(Boolean)
+    password = Column(String(50))
+
+
 
 
 @app.route('/', methods=['GET'])
 def home():
 
-    return render_template('home.html')
+    return render_template('login.html')
 
-@app.route('/menu', methods=['GET'])
+
+@app.route('/admin', methods=['GET'])
+def admin():
+
+    users = User.query.all()
+
+    return render_template('admin.html',users=users)
+
+
+@app.route('/index', methods=['GET'])
 def menu():
 
-    return render_template('index.html')
+    users = User.query.all()
+
+    return render_template('index.html',users=users)
+
+
 
 @app.route('/', methods=['POST'])
 def login():
 
-    admins = { 'eli@bere.com':'Bere',
-           'ashpen@sms.com':'6666',
-           'bob@sms.com':'1592'}
+    admins = {'sudo@app.com':'Bere'}
 
     email = request.form.get('email')
     passwd = request.form.get('password')
 
-    
-    if email in admins:                               #chex to see if email input == one in list admins
+    #admins = User.query.filter_by(name=name).first()
+    users = User.query.all()
+
+    if email in admins:                             #chex to see id u are admin
         if admins[email]== passwd:                   #chex if login email in admin == pwd entered
-            return render_template('index.html')
+            return redirect(url_for('admin'))
+
+    elif email not in admins :
+        pass
+
+    for user in users:
+        admins[user.email] = user.password 
+        
+    if email in admins:                             #chex to see if email input == one in list admins
+        if admins[email]== passwd:                   #chex if login email in admin == pwd entered
+            return redirect(url_for('menu'))
         elif admins[email] != passwd:
             #failed
             return render_template('failed.html')
@@ -59,6 +102,8 @@ def login():
     elif email not in admins :
         #failed func
         return render_template('failed.html')
+        
+
 
 
 @app.route('/send', methods=['POST']) #specifying endpoinTS
@@ -107,15 +152,44 @@ def bulksend():
 def add_reciep():
 
     name = request.form.get('name')
-    reciep = request.form.get('reciever')
+    reciep = request.form.get('tel')
     email = request.form.get('email')
+    belongs_to  = request.form.get('group')
 
-    newRecipient = Contacts(name=name,cell=reciep,email=email)
+    newRecipient = Contacts(name=name,cell=reciep,email=email, org=belongs_to) 
     db.session.add(newRecipient)
     db.session.commit()
     return render_template('added.html')
 
+@app.route('/', methods=['POST'])
+def contact_us():
+    msg = Message('Hello', sender = 'elishabere5@gmail.com', recipients = ['elishabere4@gmail.com'])
+    msg.body = "Hello Flask message sent from Flask-Mail"
+    mail.send(msg)
+
+
+
+    return f'sent'
+
+@app.route('/newuser', methods=['POST'])
+def add_user():
+    #adding system users
+    name = request.form.get('name')
+    email = request.form.get('email')
+    state = False
+    cell = request.form.get('tel')
+    password = request.form.get('password')
+
+    newUser = User(name=name, cell=cell, email=email, state=state, password=password) 
+    db.session.add(newUser)
+    db.session.commit()
+
+    return redirect(url_for('menu'))
+
+
+
+
 
 if __name__ == "__main__":
-    app.run()
-    db.create_all()
+    app.run(debug=True)
+    

@@ -19,11 +19,11 @@
 				</div>
 				<nav>
 					<ul>
-						<li><a href="#register">History</a></li> 
-						<li><a href="#bulk">Bulk</a></li>
+						<li><a href="#register">Register Users</a></li> 
+						<li><a href="#manage">Manage users</a></li>
 						<li><a href="#sendone">Send Text</a></li>
 						<li><a href="#addreciep">Add Contact</a></li>
-						<li><a href="#contacts">Update Profile</a></li>
+						<li><a href="#contacts">Add Contacts</a></li>
 					</ul>
 				</nav>
 			</header>
@@ -58,7 +58,7 @@
 						</article>
 
 				<!-- Work -->
-					<article id="bulk">
+					<article id="contacts">
 							<h2 class="major">Bulk Upload</h2>
 
 							<form method="post" action=" ">
@@ -103,7 +103,7 @@
 									<label for="demo-email">Email</label>
 									<input type="email" name="email" id="demo-email" value="" placeholder="" style="height:50px" />
 								</div>
-					<!--	<div class="field half">
+						<div class="field half">
 								<label for="demo-name">Belongs to</label>
 							<select name="group" id="org_group">
 
@@ -112,7 +112,7 @@
 								{% endfor %}
 
 							</select>
-						</div> -->
+						</div>
 							</div>
 							<ul class="actions">
 								<li><input type="submit" value="ADD CONTACT" class="primary" /></li>
@@ -149,37 +149,6 @@
 							</form>
 					</article>
 
-				<!-- Contact -->
-					<article id="bulk">
-						<h2 class="major">BULK BROADCAST</h2>
-						<form method="post" action=" {{ url_for('bulksend')}}">
-							<div class="fields">
-								<div class="field half">
-									<label for="name">  Org Name</label>
-									<input type="text" name="name" id="name" />
-								</div>
-								<div class="field">
-									<label for="demo-category">Recipient Group</label>
-									<select name="group" id="demo-category">
-										<option value="1">All Employees</option>
-										<option value="">Manufacturing</option>
-										<option value="">Shipping</option>
-										<option value="">Administration</option>
-										
-									</select>
-								</div>
-								<div class="field">
-									<label for="message">Message</label>
-									<textarea name="message" id="message" rows="4"></textarea>
-								</div>
-							</div>
-							<ul class="actions">
-								<li><input type="submit" value="Send Message" class="primary" /></li>
-								<li><input type="reset" value="Reset" /></li>
-							</ul>
-						</form>
-					
-					</article>
 
 			</div>
 
